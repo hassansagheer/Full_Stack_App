@@ -94,13 +94,13 @@ renderItems = () => {
 			onClick={() => this.editItem(item)}
 			className="btn btn-secondary mr-2"
 		>
-			Edit
+			<i className="bi bi-pencil-square"></i> Edit
 		</button>&nbsp;
 		<button
 			onClick={() => this.handleDelete(item)}
 			className="btn btn-danger"
 		>
-			Delete
+			<i className="bi bi-trash"></i> Delete
 		</button>
 		</span>
 	</li>
@@ -161,7 +161,7 @@ render() {
 			<div className="card p-3">
 			<div className="">
 				<button onClick={this.createItem} className="btn btn-info">
-				Add task
+				<i className="bi bi-plus-lg"></i> Add
 				</button>
 			</div>
 			{this.renderTabList()}
