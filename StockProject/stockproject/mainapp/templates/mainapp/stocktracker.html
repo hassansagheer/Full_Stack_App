@@ -1,6 +1,7 @@
 {% extends 'mainapp/basic.html' %}
 {% load static %}
 {% block title %}
+{% load myfilters %}
 StockPicker
 {% endblock %}
 {% block css %}
@@ -13,32 +14,47 @@ StockPicker
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Sr. No.</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Previous Close</th>
+                    <th scope="col">Open</th>
+                    <th scope="col">Change</th>
+                    <th scope="col">Market Cap</th>
+                    <th scope="col">Volume</th>
                 </tr>
             </thead>
             <tbody>
+                {% for key, value in details.items %}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ key }}</td>
+                  <td id="{{key}}_price">{{ value.info.currentPrice|floatformat:4 }}</td>
+                  <td id="{{key}}_prevprice">{{ value.info.previousClose|floatformat:4 }}</td>
+                  <td>{{ value.info.open }}</td>
+                  <td id="{{key}}_change">
+                    <script>
+                        var change = document.getElementById("{{key}}_price").innerHTML - document.getElementById("{{key}}_prevprice").innerHTML;
+                        change = Number((change).toFixed(4));
+                        if(change>=0){
+                            document.getElementById("{{key}}_change").style.color = "green";
+                            document.getElementById("{{key}}_change").innerHTML = "+" + change;
+                        }
+                        else{
+                            document.getElementById("{{key}}_change").style.color = "red";
+                            document.getElementById("{{key}}_change").innerHTML = change;
+                        }
+                    </script>
+                  </td>
+                  <td>{{ value.info.marketCap }}</td>
+                  <td>{{ value.info.volume }}</td>
+
+                  <!-- {% for item in value.history %}
+                  <td>{{ item.key }} {{ item.Open }}</td>
+                  {% endfor %} -->
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </table>
+                {% endfor %}
+              </tbody>
     </table>
 </div>
 {% endblock %}
