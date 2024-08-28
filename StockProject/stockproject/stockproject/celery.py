@@ -13,8 +13,16 @@ app.conf.update(timezone = 'Asia/Karachi')
 
 app.config_from_object(settings, namespace='CELERY')
 
-app.conf.beat_scheduler = {
+app.conf.beat_schedule = {
     'every-10-seconds': {
-        'task': 'mainapp/tasks.py'
+        'task': 'mainapp.tasks.update_stock',
+        'schedule': 10,
+        'args': (['RTX', 'NVDA'],)
     }
 }
+
+app.autodiscover_tasks()
+
+@app.task(bind=True)
+def debug_task(self):
+    print(f'Request: {self.request!r}')
