@@ -9,6 +9,11 @@ yfinance = "*"
 yahoo-fin = "*"
 requests-html = "*"
 pandas = "*"
+celery = "*"
+django-celery-results = "*"
+django-celery-beat = "*"
+redis = "*"
+channels = "*"
 
 [dev-packages]
 
