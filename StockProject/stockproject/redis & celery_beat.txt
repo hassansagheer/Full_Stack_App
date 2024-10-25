@@ -1,0 +1,7 @@
+# Commands to run redis & celery_beat
+
+# redis:
+celery -A stockproject.celery worker --pool=solo -l info
+
+# celery_beat:
+celery -A stockproject beat -l INFO

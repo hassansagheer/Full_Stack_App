@@ -72,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'stockproject.wsgi.application'
+ASGI_APPLICATION = 'stockproject.asgi.application'
 
 
 # Database
@@ -127,11 +128,38 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery Settings
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'Asia/Karachi'
-CELERY_RESULT_BACKEND = 'django-db'
+broker_connection_retry_on_startup = True
+broker_url = 'redis://127.0.0.1:6379'
+ACCEPT_CONTENT = ['application/json']
+RESULT_SERIALIZER = 'json'
+TASK_SERIALIZER = 'json'
+TIMEZONE = 'Asia/Karachi'
+RESULT_BACKEND = 'django-db'
 
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)],
+#             "symmetric_encryption_keys": [b'my-secret-key'],
+#             "capacity": 1000,
+#             "expiry": 10,
+#             "group_expiry": 60,
+#             "channel_max_length": 100,
+#             "symmetric_encryption_keys": [b'my-secret-key'],
+#             "socket_timeout": 5,  # Timeout setting in seconds
+#         },
+#     },
+# }

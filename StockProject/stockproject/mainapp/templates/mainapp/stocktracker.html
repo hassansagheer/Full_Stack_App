@@ -57,6 +57,25 @@ StockPicker
               </tbody>
     </table>
 </div>
+{{ room_name|json_script:"room_name" }}
+<script>
+    const roomName = JSON.parse(document.getElementById('room_name').textContent)
+    var queryString = window.location.search;
+    queryString = queryString.substring(1);
+    console.log(queryString);
+    const stockSocket = new WebSocket('ws://' + window.location.host + '/ws/stock/' + roomName + '/?' + queryString);
+    // const stockSocket = new WebSocket('ws://' + window.location.host + '/ws/stock/track/?' + queryString);
+    // const socket = new WebSocket('ws://127.0.0.1:8000/ws/stock/track/');
+
+stockSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    console.log(data);
+};
+
+stockSocket.onclose = function(e) {
+    console.error('Stock socket closed unexpectedly');
+};
+</script>
 {% endblock %}
 {% block js %}
 <script></script>

@@ -48,7 +48,7 @@ def stockTracker(request):
         print(time_taken)
         
         print(details)
-        return render(request, 'mainapp/stocktracker.html', {'details': details})
+        return render(request, 'mainapp/stocktracker.html', {'details': details, 'room_name': 'track'})
     except Exception as e:
         print(f"An error occurred: {e}")
         return render(request, 'mainapp/stocktracker.html', {'error': str(e)})
